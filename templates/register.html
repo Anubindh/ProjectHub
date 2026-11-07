@@ -1,0 +1,651 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | ProjectHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #f5f7fc;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .register-page {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+        }
+
+        /* BRAND PANEL */
+
+        .register-brand {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 55px 65px;
+            color: white;
+            background:
+                radial-gradient(circle at 80% 20%, rgba(79, 126, 255, 0.35), transparent 35%),
+                linear-gradient(145deg, #101d42 0%, #172d61 55%, #244c91 100%);
+        }
+
+        .register-brand::before {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 50%;
+            right: -150px;
+            bottom: -130px;
+            box-shadow:
+                0 0 0 45px rgba(255,255,255,0.025),
+                0 0 0 90px rgba(255,255,255,0.025);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #638dff, #3472e8);
+            font-size: 22px;
+            font-weight: 800;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .brand-name {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+        }
+
+        .brand-content {
+            max-width: 540px;
+            position: relative;
+            z-index: 1;
+            margin: 65px 0;
+        }
+
+        .brand-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 14px;
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 30px;
+            background: rgba(255,255,255,0.08);
+            color: #d7e3ff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .brand-label span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #70e6b0;
+        }
+
+        .brand-content h1 {
+            margin: 27px 0 18px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(38px, 4.5vw, 58px);
+            line-height: 1.13;
+            letter-spacing: -2.5px;
+            font-weight: 800;
+        }
+
+        .brand-content h1 em {
+            color: #82a9ff;
+            font-style: normal;
+        }
+
+        .brand-content > p {
+            max-width: 440px;
+            color: #c3d0eb;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .brand-features {
+            display: grid;
+            gap: 17px;
+            margin-top: 38px;
+        }
+
+        .brand-feature {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: #e4ecff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .feature-check {
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 8px;
+            background: rgba(114, 160, 255, 0.18);
+            color: #91b5ff;
+            font-weight: 800;
+        }
+
+        .brand-footer {
+            position: relative;
+            z-index: 1;
+            color: #9eafd1;
+            font-size: 12px;
+        }
+
+        /* REGISTER FORM */
+
+        .register-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 45px 35px;
+            background: #ffffff;
+        }
+
+        .register-form-container {
+            width: 100%;
+            max-width: 410px;
+        }
+
+        .mobile-brand {
+            display: none;
+        }
+
+        .register-heading {
+            margin-bottom: 30px;
+        }
+
+        .welcome-label {
+            color: #5279d9;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .register-heading h2 {
+            margin: 13px 0 10px;
+            color: #172442;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 35px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+        }
+
+        .register-heading p {
+            margin: 0;
+            color: #8490a5;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .auth-message {
+            padding: 12px 15px;
+            margin: 0 0 20px;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            background: #fff1f2;
+            color: #be123c;
+            font-size: 13px;
+        }
+
+        .register-form {
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 9px;
+            color: #273650;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            height: 52px;
+            padding: 0 16px;
+            border: 1px solid #e0e6f0;
+            border-radius: 11px;
+            outline: none;
+            background: #fbfcff;
+            color: #172442;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #a5afbf;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #4779ec;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(71, 121, 236, 0.10);
+        }
+
+        .password-input {
+            padding-right: 55px !important;
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #71809a;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .password-toggle:hover {
+            color: #3869d8;
+        }
+
+        .password-hint {
+            display: block;
+            margin-top: 8px;
+            color: #9aa5b6;
+            font-size: 11px;
+        }
+
+        .register-button {
+            width: 100%;
+            height: 54px;
+            margin-top: 7px;
+            border: none;
+            border-radius: 11px;
+            background: linear-gradient(110deg, #2859d9, #477ff0);
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(54, 105, 220, 0.20);
+            transition: all 0.25s ease;
+        }
+
+        .register-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(54, 105, 220, 0.30);
+        }
+
+        .register-button:active {
+            transform: translateY(0);
+        }
+
+        .login-text {
+            margin-top: 26px;
+            text-align: center;
+            color: #8994a8;
+            font-size: 13px;
+        }
+
+        .login-text a {
+            color: #3569dc;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+
+        .register-security {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 30px;
+            color: #a0a9b8;
+            font-size: 11px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+            .register-page {
+                grid-template-columns: 0.9fr 1.1fr;
+            }
+
+            .register-brand {
+                padding: 40px 35px;
+            }
+
+            .brand-content h1 {
+                font-size: 42px;
+            }
+
+            .register-main {
+                padding: 35px 25px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .register-page {
+                display: block;
+                min-height: 100vh;
+            }
+
+            .register-brand {
+                display: none;
+            }
+
+            .register-main {
+                min-height: 100vh;
+                padding: 30px 23px;
+            }
+
+            .mobile-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 38px;
+                color: #172442;
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                font-size: 21px;
+                font-weight: 800;
+            }
+
+            .mobile-brand .brand-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 19px;
+                color: white;
+            }
+
+            .register-heading h2 {
+                font-size: 31px;
+            }
+
+            .register-form-container {
+                max-width: 430px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="register-page">
+
+    <!-- LEFT BRANDING SECTION -->
+
+    <section class="register-brand">
+
+        <div class="brand-logo">
+            <div class="brand-icon">P</div>
+            <div class="brand-name">ProjectHub</div>
+        </div>
+
+        <div class="brand-content">
+
+            <div class="brand-label">
+                <span></span>
+                Start your journey
+            </div>
+
+            <h1>
+                Turn your plans
+                <em>into progress.</em>
+            </h1>
+
+            <p>
+                Create your workspace, bring your projects together
+                and make every step of your work more organized.
+            </p>
+
+            <div class="brand-features">
+
+                <div class="brand-feature">
+                    <div class="feature-check">✓</div>
+                    Create and manage multiple projects
+                </div>
+
+                <div class="brand-feature">
+                    <div class="feature-check">✓</div>
+                    Track tasks and project milestones
+                </div>
+
+                <div class="brand-feature">
+                    <div class="feature-check">✓</div>
+                    See your progress in one place
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="brand-footer">
+            © 2026 ProjectHub. Built for better project management.
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT REGISTER SECTION -->
+
+    <main class="register-main">
+
+        <div class="register-form-container">
+
+            <div class="mobile-brand">
+                <div class="brand-icon">P</div>
+                ProjectHub
+            </div>
+
+            <div class="register-heading">
+
+                <div class="welcome-label">
+                    Get started
+                </div>
+
+                <h2>Create your account</h2>
+
+                <p>
+                    Set up your account and start organizing your projects.
+                </p>
+
+            </div>
+
+
+            {% with messages = get_flashed_messages() %}
+
+                {% for message in messages %}
+
+                    <div class="auth-message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endwith %}
+
+
+            <form action="{{ url_for('register') }}"
+                  method="POST"
+                  class="register-form">
+
+                <input type="hidden"
+                       name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <div class="form-group">
+
+                    <label for="name">Full name</label>
+
+                    <div class="input-wrapper">
+
+                        <input type="text"
+                               id="name"
+                               name="name"
+                               placeholder="Enter your full name"
+                               maxlength="100"
+                               autocomplete="name"
+                               required>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">Email address</label>
+
+                    <div class="input-wrapper">
+
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               placeholder="you@example.com"
+                               maxlength="150"
+                               autocomplete="email"
+                               required>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">Create password</label>
+
+                    <div class="input-wrapper">
+
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               class="password-input"
+                               placeholder="Create a strong password"
+                               minlength="8"
+                               autocomplete="new-password"
+                               required>
+
+                        <button type="button"
+                                class="password-toggle"
+                                id="togglePassword">
+                            Show
+                        </button>
+
+                    </div>
+
+                    <span class="password-hint">
+                        Use at least 8 characters.
+                    </span>
+
+                </div>
+
+
+                <button type="submit" class="register-button">
+                    Create Account →
+                </button>
+
+            </form>
+
+
+            <div class="login-text">
+                Already have an account?
+                <a href="{{ url_for('login') }}">Sign in</a>
+            </div>
+
+
+            <div class="register-security">
+                <span>🔒</span>
+                Your account is protected and secure.
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+
+    togglePassword.addEventListener("click", function () {
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePassword.textContent = "Hide";
+        } else {
+            passwordInput.type = "password";
+            togglePassword.textContent = "Show";
+        }
+
+    });
+</script>
+
+</body>
+</html>
